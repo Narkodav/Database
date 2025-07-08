@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {
+            "name": "Auth Service",
+            "path": "./authentificator"
+        }
+    ],
+    "settings": {
+        "git.detectSubmodules": false,
+        "java.compile.nullAnalysis.mode": "automatic"
+    }
+}
