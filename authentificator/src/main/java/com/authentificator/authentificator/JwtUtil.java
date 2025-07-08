@@ -6,16 +6,32 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
-    @Value("${jwt.secret}")
-    private String SECRET;
+    @Value("${jwt.private-key}")
+    private String PRIVATE_KEY;
     private final int EXPIRATION = 86400000; // 24 hours
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    private PrivateKey getSigningKey() {
+        try {
+            String privateKeyPEM = PRIVATE_KEY
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replaceAll("\\s", "");
+            
+            byte[] decoded = Base64.getDecoder().decode(privateKeyPEM);
+            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
+            KeyFactory factory = KeyFactory.getInstance("RSA");
+            return factory.generatePrivate(spec);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load private key", e);
+        }
     }
 
     public String generateToken(String username) {
@@ -23,7 +39,7 @@ public class JwtUtil {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(getSigningKey(), SignatureAlgorithm.RS256)
                 .compact();
     }
 

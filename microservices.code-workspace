@@ -1,12 +1,17 @@
 {
     "folders": [
         {
-            "name": "Auth Service",
+            "name": "authentificator",
             "path": "./authentificator"
+        },
+        {
+            "name": "clientdata",
+            "path": "clientdatabase/clientdata"
         }
     ],
     "settings": {
         "git.detectSubmodules": false,
-        "java.compile.nullAnalysis.mode": "automatic"
+        "java.compile.nullAnalysis.mode": "automatic",
+        "java.configuration.updateBuildConfiguration": "interactive"
     }
 }

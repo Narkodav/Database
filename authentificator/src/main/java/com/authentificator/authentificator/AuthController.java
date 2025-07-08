@@ -35,6 +35,11 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/user/{username}")
+    public Long getUserIdByUsername(@PathVariable String username, @RequestHeader("Authorization") String token) {
+        return authService.getUserIdByUsername(username, token.replace("Bearer ", ""));
+    }
+
     @Data
     @NoArgsConstructor
     static class LoginRequest {
