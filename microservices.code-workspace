@@ -6,7 +6,7 @@
         },
         {
             "name": "clientdata",
-            "path": "clientdatabase/clientdata"
+            "path": "./clientdata"
         }
     ],
     "settings": {

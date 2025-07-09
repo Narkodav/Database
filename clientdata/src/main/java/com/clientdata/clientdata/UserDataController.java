@@ -19,20 +19,15 @@ public class UserDataController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    private AuthServiceClient authServiceClient;    
-
     @GetMapping
     public List<UserData> getUserData(@RequestHeader("Authorization") String token) {
-        String username = jwtUtil.extractUsername(token.replace("Bearer ", ""));
-        Long userId = authServiceClient.getUserIdByUsername(username, token);
+        Long userId = jwtUtil.extractId(token.replace("Bearer ", ""));
         return dataRepo.findByUserId(userId);
     }
 
     @PostMapping
     public UserData addData(@RequestBody UserData data, @RequestHeader("Authorization") String token) {
-        String username = jwtUtil.extractUsername(token.replace("Bearer ", ""));
-        Long userId = authServiceClient.getUserIdByUsername(username, token);
+        Long userId = jwtUtil.extractId(token.replace("Bearer ", ""));
         data.setUserId(userId);
         return dataRepo.save(data);
     }

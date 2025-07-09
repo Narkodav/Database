@@ -12,7 +12,7 @@ public class UserData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;        // Entry id
-    private Long userId;    // Links to User.id in Auth Service
-    
-    private String content;    
+
+    private Long userId;
+    private String content;
 }
